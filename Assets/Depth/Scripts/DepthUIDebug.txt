@@ -1,0 +1,44 @@
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class DepthUIDebug : MonoBehaviour
+{
+    public TestCameraDepth depth;
+    public float depthScale = 1;
+    public Text scaleText;
+    public Slider Slider;
+    public Text SliderValue;
+    public float maxNearMove;
+    // Use this for initialization
+    void Start()
+    {
+        Slider.maxValue = maxNearMove;
+        Slider.minValue = -maxNearMove;
+        Slider.onValueChanged.AddListener(OnSliderValueChange);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            depthScale -= 0.01f;
+            depth.ReplaceDepthScale(depthScale);
+            scaleText.text = depthScale.ToString("0.00");
+        }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            depthScale += 0.01f;
+            depth.ReplaceDepthScale(depthScale);
+            scaleText.text = depthScale.ToString("0.00");
+        }
+    }
+    public void OnSliderValueChange(float value)
+    {
+        Debug.Log(value);
+        Debug.Log(Slider.value);
+        depth.ReplaceDepthCameraNearMove(Slider.value);
+        SliderValue.text = Slider.value.ToString();
+    }
+}
